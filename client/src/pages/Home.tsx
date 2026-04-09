@@ -36,10 +36,6 @@ export default function Home() {
             variants={stagger}
             className="max-w-3xl"
           >
-            <motion.div variants={fadeUp} className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-              <Shield size={14} />
-              CISA Framework Aligned
-            </motion.div>
             <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-display font-bold leading-tight text-foreground mb-6">
               Enterprise-Grade Security.{" "}
               <span className="text-primary">Modular.</span>{" "}
