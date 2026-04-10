@@ -1,16 +1,15 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { Link } from "wouter";
 import {
   Shield, Zap, BarChart3, BookOpen, Lock, Globe,
-  Server, Eye, CheckCircle, ArrowRight, HelpCircle
+  Server, Eye, CheckCircle, ArrowRight
 } from "lucide-react";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
 };
 
@@ -19,471 +18,271 @@ const stagger = {
   show: { transition: { staggerChildren: 0.1 } },
 };
 
-const baseModules = [
+const tiers = [
+  {
+    name: "Starter",
+    tagline: "Start free. See what you're working with.",
+    description: "For growing teams ready to understand and reduce data loss risks with complete SaaS visibility.",
+    cta: "Get Started",
+    ctaHref: "/#contact",
+    highlight: false,
+    features: [
+      "Discover SaaS sprawl, including unsanctioned AI and shadow apps",
+      "Detect spear phishing with no manual tuning",
+      "Coreser Score baseline assessment",
+      "Up to 1,000 users",
+      "Standard onboarding support",
+    ],
+  },
+  {
+    name: "Foundations",
+    tagline: "Governance and discovery at scale.",
+    description: "For organizations ready to enforce privilege, map compliance, and tighten third-party access.",
+    cta: "Get a Quote",
+    ctaHref: "/#contact",
+    highlight: true,
+    features: [
+      "Shadow SaaS, AI agents, integrations, and browser extensions",
+      "Third-party access ownership and last activity monitoring",
+      "Privilege minimization and access rightsizing",
+      "Compliance audit and mapping (SOC 2, HIPAA, PCI-DSS, NIST)",
+      "Resolve unowned agents and integration access",
+      "Dedicated Customer Success Manager",
+    ],
+  },
+  {
+    name: "Advanced",
+    tagline: "Full detection, response, and AI security.",
+    description: "For security-mature organizations that need deep threat detection, incident response, and AI guardrails.",
+    cta: "Get a Quote",
+    ctaHref: "/#contact",
+    highlight: false,
+    features: [
+      "Account takeover and session hijack detection",
+      "Insider risk and misuse detection",
+      "Sensitive data exposure in prompts and agent actions",
+      "API and token compromise monitoring",
+      "Runtime guardrails and AI security control",
+      "Threat triage, remediation, and full chain forensics",
+      "24/7 SOC monitoring with 1-hour SLA",
+    ],
+  },
+];
+
+const modules = [
   {
     id: "endpoint",
     name: "Endpoint Protection",
     icon: Shield,
     description: "Real-time malware detection, behavioral analysis, and automated isolation.",
-    priceMonth: 4,
-    priceAnnual: 3.2,
-    unit: "/ endpoint / mo",
-    required: true,
   },
   {
     id: "agent",
     name: "Lightweight Agent",
     icon: Zap,
-    description: "The core Coreser monitoring agent. Required for all plans.",
-    priceMonth: 0,
-    priceAnnual: 0,
-    unit: "included",
-    required: true,
+    description: "The core Coreser monitoring agent. Less than 2% CPU. Works silently in the background.",
   },
   {
     id: "assessment",
     name: "Risk Assessment Engine",
     icon: BarChart3,
     description: "Continuous asset discovery, CVE correlation, and Coreser Score reporting.",
-    priceMonth: 299,
-    priceAnnual: 239,
-    unit: "/ mo",
-    required: true,
   },
-];
-
-const addOnModules = [
   {
     id: "network",
     name: "Network Monitoring",
     icon: Eye,
     description: "Full network traffic analysis, DNS monitoring, and lateral movement detection.",
-    priceMonth: 199,
-    priceAnnual: 159,
-    unit: "/ mo",
   },
   {
     id: "identity",
     name: "Identity & Access",
     icon: Lock,
     description: "MFA enforcement, privileged access management, and credential threat detection.",
-    priceMonth: 149,
-    priceAnnual: 119,
-    unit: "/ mo",
   },
   {
     id: "cloud",
     name: "Cloud Security",
     icon: Globe,
     description: "AWS, Azure, GCP posture management, misconfiguration detection, and CSPM.",
-    priceMonth: 249,
-    priceAnnual: 199,
-    unit: "/ mo",
   },
   {
     id: "compliance",
     name: "Compliance Manager",
     icon: BookOpen,
     description: "Automated compliance evidence for HIPAA, PCI-DSS, SOC 2, and NIST frameworks.",
-    priceMonth: 349,
-    priceAnnual: 279,
-    unit: "/ mo",
   },
   {
     id: "siem",
     name: "SIEM Integration",
     icon: Server,
-    description: "Splunk, Microsoft Sentinel, and elastic SIEM connector with pre-built detection rules.",
-    priceMonth: 199,
-    priceAnnual: 159,
-    unit: "/ mo",
+    description: "Splunk, Microsoft Sentinel, and Elastic SIEM connector with pre-built detection rules.",
   },
 ];
 
-const managedAddOn = {
-  id: "managed",
-  name: "Coreser-Managed Service",
-  priceMonth: 1999,
-  priceAnnual: 1599,
-  description:
-    "Hand off monitoring, alerting, and incident response to Coreser's 24/7 Security Operations team. Includes a dedicated Customer Success Manager.",
-  includes: [
-    "24/7 SOC monitoring and alert triage",
-    "Dedicated Customer Success Manager",
-    "Monthly executive security briefing",
-    "Incident response with 1-hour SLA",
-  ],
-};
-
 export default function Pricing() {
-  const [annual, setAnnual] = useState(false);
-  const [endpoints, setEndpoints] = useState(50);
-  const [activeAddOns, setActiveAddOns] = useState<string[]>([]);
-  const [managed, setManaged] = useState(false);
-
-  const toggleAddOn = (id: string) => {
-    setActiveAddOns((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
-  };
-
-  const basePrice = annual
-    ? baseModules.reduce((sum, m) => sum + (m.id === "endpoint" ? m.priceAnnual * endpoints : m.priceAnnual), 0)
-    : baseModules.reduce((sum, m) => sum + (m.id === "endpoint" ? m.priceMonth * endpoints : m.priceMonth), 0);
-
-  const addOnPrice = activeAddOns.reduce((sum, id) => {
-    const mod = addOnModules.find((m) => m.id === id);
-    if (!mod) return sum;
-    return sum + (annual ? mod.priceAnnual : mod.priceMonth);
-  }, 0);
-
-  const managedPrice = managed ? (annual ? managedAddOn.priceAnnual : managedAddOn.priceMonth) : 0;
-
-  const total = Math.round(basePrice + addOnPrice + managedPrice);
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
       {/* Header */}
-      <section className="pt-32 pb-16 bg-gradient-to-b from-secondary/30 to-background">
+      <section className="pt-36 pb-20 bg-gradient-to-b from-secondary/30 to-background">
         <div className="container px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
           <motion.div initial="hidden" animate="show" variants={stagger}>
-            <motion.p variants={fadeUp} className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
-              Transparent Pricing
-            </motion.p>
             <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl font-display font-bold text-foreground mb-6">
-              Build your security stack.
+              Start free. Expand as you grow.
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-muted-foreground text-xl leading-relaxed max-w-2xl mx-auto mb-8">
-              No hidden fees, no forced bundles. Choose exactly what your organization needs and see your price in real time.
+            <motion.p variants={fadeUp} className="text-muted-foreground text-xl leading-relaxed max-w-2xl mx-auto">
+              Security pricing for modular adoption. No bloated bundles, no long-term lock-in. Choose what your team needs and add more when you're ready.
             </motion.p>
-            <motion.div variants={fadeUp} className="flex items-center justify-center gap-4">
-              <span className={`text-sm font-medium ${!annual ? "text-foreground" : "text-muted-foreground"}`}>
-                Monthly
-              </span>
-              <Switch
-                checked={annual}
-                onCheckedChange={setAnnual}
-                data-testid="switch-billing-annual"
-                className="data-[state=checked]:bg-primary"
-              />
-              <span className={`text-sm font-medium ${annual ? "text-foreground" : "text-muted-foreground"}`}>
-                Annual
-                <span className="ml-2 bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full font-semibold">
-                  Save 20%
-                </span>
-              </span>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Tiers */}
+      <section className="pb-24">
+        <div className="container px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+          <motion.div
+            initial="hidden"
+            animate="show"
+            variants={stagger}
+            className="grid md:grid-cols-3 gap-6"
+          >
+            {tiers.map((tier) => (
+              <motion.div
+                key={tier.name}
+                variants={fadeUp}
+                className={`rounded-3xl p-8 border flex flex-col ${
+                  tier.highlight
+                    ? "bg-foreground text-white border-foreground shadow-xl"
+                    : "bg-white border-border/50 shadow-sm"
+                }`}
+              >
+                <div className="mb-6">
+                  <h3 className={`text-xl font-display font-bold mb-1 ${tier.highlight ? "text-white" : "text-foreground"}`}>
+                    {tier.name}
+                  </h3>
+                  <p className={`text-sm mb-3 ${tier.highlight ? "text-white/60" : "text-muted-foreground"}`}>
+                    {tier.tagline}
+                  </p>
+                  <p className={`text-sm leading-relaxed ${tier.highlight ? "text-white/50" : "text-muted-foreground"}`}>
+                    {tier.description}
+                  </p>
+                </div>
+
+                <ul className="space-y-3 mb-8 flex-1">
+                  {tier.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2.5">
+                      <CheckCircle size={14} className={`mt-0.5 shrink-0 ${tier.highlight ? "text-primary" : "text-primary"}`} />
+                      <span className={`text-sm leading-snug ${tier.highlight ? "text-white/70" : "text-foreground/70"}`}>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <a href={tier.ctaHref}>
+                  <Button
+                    className={`w-full rounded-full py-5 font-semibold transition-all ${
+                      tier.highlight
+                        ? "bg-primary hover:bg-accent text-white"
+                        : "bg-foreground hover:bg-foreground/90 text-white"
+                    }`}
+                    data-testid={`button-pricing-${tier.name.toLowerCase()}`}
+                  >
+                    {tier.cta} <ArrowRight size={15} className="ml-2" />
+                  </Button>
+                </a>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Module Library */}
+      <section className="py-24 bg-white">
+        <div className="container px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="text-center mb-14">
+            <motion.h2 variants={fadeUp} className="text-4xl font-display font-bold text-foreground mb-5">
+              The full module library
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-muted-foreground text-lg max-w-xl mx-auto">
+              Every module is independently deployable and works seamlessly as part of the full Coreser stack. Contact us to find the right combination for your risk profile.
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={stagger}
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-5"
+          >
+            {modules.map((mod) => {
+              const Icon = mod.icon;
+              return (
+                <motion.div
+                  key={mod.id}
+                  variants={fadeUp}
+                  className="bg-secondary/20 border border-border/40 rounded-2xl p-6 hover:border-primary/30 hover:bg-secondary/40 transition-all"
+                  data-testid={`module-card-${mod.id}`}
+                >
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+                    <Icon size={18} className="text-primary" />
+                  </div>
+                  <h4 className="font-semibold text-foreground text-sm mb-2">{mod.name}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{mod.description}</p>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Quote CTA */}
+      <section className="py-24 bg-secondary/25">
+        <div className="container px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto text-center">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}>
+            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-display font-bold text-foreground mb-5">
+              SaaS and AI security done right.
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-muted-foreground text-lg mb-10 max-w-xl mx-auto">
+              Tell us about your environment and we'll put together a configuration built for your risk profile, your team size, and your budget.
+            </motion.p>
+            <motion.div variants={fadeUp}>
+              <a href="/#contact">
+                <Button className="rounded-full px-10 py-6 text-base bg-primary hover:bg-accent text-white shadow-md shadow-primary/15">
+                  Get a Quote <ArrowRight size={16} className="ml-2" />
+                </Button>
+              </a>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Builder */}
-      <section className="pb-32">
-        <div className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Left: Module Selector */}
-            <div className="lg:col-span-2 space-y-8">
-              {/* Endpoint count */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="bg-white rounded-3xl p-8 border border-border/50 shadow-sm"
-              >
-                <h3 className="text-lg font-display font-bold text-foreground mb-2">How many endpoints?</h3>
-                <p className="text-sm text-muted-foreground mb-6">Laptops, servers, workstations, and VMs</p>
-                <div className="flex items-center gap-6">
-                  <input
-                    type="range"
-                    min={10}
-                    max={500}
-                    step={10}
-                    value={endpoints}
-                    onChange={(e) => setEndpoints(Number(e.target.value))}
-                    className="flex-1 accent-primary"
-                    data-testid="input-endpoints-slider"
-                  />
-                  <div className="bg-secondary/50 rounded-xl px-4 py-2 min-w-[80px] text-center">
-                    <span className="text-xl font-display font-bold text-primary">{endpoints}</span>
-                    <span className="text-xs text-muted-foreground block">endpoints</span>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Base modules */}
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                  Base Platform (Included)
-                </h3>
-                <div className="space-y-3">
-                  {baseModules.map((mod) => {
-                    const Icon = mod.icon;
-                    return (
-                      <div
-                        key={mod.id}
-                        className="bg-white border border-primary/20 rounded-2xl p-5 flex items-center gap-4"
-                        data-testid={`module-base-${mod.id}`}
-                      >
-                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                          <Icon size={18} className="text-primary" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <p className="font-medium text-foreground text-sm">{mod.name}</p>
-                            <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">Required</span>
-                          </div>
-                          <p className="text-xs text-muted-foreground mt-0.5">{mod.description}</p>
-                        </div>
-                        <div className="text-right shrink-0">
-                          {mod.priceMonth === 0 ? (
-                            <span className="text-sm font-medium text-primary">Included</span>
-                          ) : (
-                            <div>
-                              <span className="text-sm font-bold text-foreground">
-                                ${annual ? mod.priceAnnual : mod.priceMonth}
-                              </span>
-                              <span className="text-xs text-muted-foreground block">{mod.unit}</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Add-on modules */}
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                  Add-On Modules
-                </h3>
-                <div className="space-y-3">
-                  {addOnModules.map((mod) => {
-                    const Icon = mod.icon;
-                    const active = activeAddOns.includes(mod.id);
-                    return (
-                      <button
-                        key={mod.id}
-                        onClick={() => toggleAddOn(mod.id)}
-                        className={`w-full text-left bg-white border rounded-2xl p-5 flex items-center gap-4 transition-all duration-200 ${
-                          active
-                            ? "border-primary shadow-sm shadow-primary/10 bg-primary/2"
-                            : "border-border/50 hover:border-primary/30"
-                        }`}
-                        data-testid={`module-addon-${mod.id}`}
-                      >
-                        <div
-                          className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                            active ? "bg-primary/15" : "bg-muted/60"
-                          }`}
-                        >
-                          <Icon size={18} className={active ? "text-primary" : "text-muted-foreground"} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className={`font-medium text-sm ${active ? "text-foreground" : "text-foreground/80"}`}>
-                            {mod.name}
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-0.5">{mod.description}</p>
-                        </div>
-                        <div className="flex items-center gap-4 shrink-0">
-                          <div className="text-right">
-                            <span className="text-sm font-bold text-foreground">
-                              +${annual ? mod.priceAnnual : mod.priceMonth}
-                            </span>
-                            <span className="text-xs text-muted-foreground block">{mod.unit}</span>
-                          </div>
-                          <div
-                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                              active ? "border-primary bg-primary" : "border-border"
-                            }`}
-                          >
-                            {active && <CheckCircle size={12} className="text-white" />}
-                          </div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Managed service */}
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
-                  Managed Service
-                </h3>
-                <button
-                  onClick={() => setManaged(!managed)}
-                  className={`w-full text-left bg-white border rounded-3xl p-6 flex items-start gap-4 transition-all duration-200 ${
-                    managed ? "border-primary shadow-md shadow-primary/10" : "border-border/50 hover:border-primary/30"
-                  }`}
-                  data-testid="module-managed"
-                >
-                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${managed ? "bg-primary/15" : "bg-muted/60"}`}>
-                    <Shield size={22} className={managed ? "text-primary" : "text-muted-foreground"} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="font-semibold text-foreground">{managedAddOn.name}</p>
-                        <p className="text-sm text-muted-foreground mt-1">{managedAddOn.description}</p>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <span className="text-lg font-bold text-foreground">
-                          +${annual ? managedAddOn.priceAnnual : managedAddOn.priceMonth}
-                        </span>
-                        <span className="text-xs text-muted-foreground block">/ mo</span>
-                      </div>
-                    </div>
-                    <ul className="mt-4 grid grid-cols-2 gap-2">
-                      {managedAddOn.includes.map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-xs text-foreground/70">
-                          <CheckCircle size={12} className="text-primary mt-0.5 shrink-0" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div
-                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mt-1 shrink-0 ${
-                      managed ? "border-primary bg-primary" : "border-border"
-                    }`}
-                  >
-                    {managed && <CheckCircle size={12} className="text-white" />}
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Right: Price Summary (sticky) */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-28">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="bg-foreground text-white rounded-3xl p-8"
-                >
-                  <h3 className="text-lg font-display font-bold mb-6">Your Plan</h3>
-
-                  <div className="space-y-3 mb-6">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-white/60">Base Platform ({endpoints} endpoints)</span>
-                      <span className="text-white font-medium">${Math.round(basePrice)}/mo</span>
-                    </div>
-                    {activeAddOns.map((id) => {
-                      const mod = addOnModules.find((m) => m.id === id)!;
-                      return (
-                        <div key={id} className="flex justify-between text-sm">
-                          <span className="text-white/60">{mod.name}</span>
-                          <span className="text-white font-medium">+${annual ? mod.priceAnnual : mod.priceMonth}/mo</span>
-                        </div>
-                      );
-                    })}
-                    {managed && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-white/60">Managed Service</span>
-                        <span className="text-white font-medium">+${annual ? managedAddOn.priceAnnual : managedAddOn.priceMonth}/mo</span>
-                      </div>
-                    )}
-                    {annual && (
-                      <div className="flex justify-between text-sm text-primary">
-                        <span>Annual discount (20%)</span>
-                        <span>Applied</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="border-t border-white/10 pt-5 mb-7">
-                    <div className="flex items-end justify-between">
-                      <span className="text-white/60 text-sm">Estimated total</span>
-                      <div className="text-right">
-                        <motion.span
-                          key={total}
-                          initial={{ scale: 1.2, color: "#8A9A5B" }}
-                          animate={{ scale: 1, color: "#ffffff" }}
-                          className="text-4xl font-display font-bold text-white"
-                          data-testid="text-price-total"
-                        >
-                          ${total}
-                        </motion.span>
-                        <span className="text-white/50 text-sm block">per month</span>
-                      </div>
-                    </div>
-                    {annual && (
-                      <p className="text-xs text-white/40 mt-2">
-                        Billed annually as ${total * 12}/yr
-                      </p>
-                    )}
-                  </div>
-
-                  <Button
-                    className="w-full rounded-full py-5 bg-primary hover:bg-accent text-white font-semibold mb-3"
-                    data-testid="button-pricing-cta"
-                  >
-                    Start Free Assessment <ArrowRight size={16} className="ml-2" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full rounded-full py-5 border-white/20 text-white hover:bg-white/10 text-sm"
-                  >
-                    Talk to Sales
-                  </Button>
-
-                  <div className="mt-6 flex items-start gap-2 text-white/40 text-xs">
-                    <HelpCircle size={12} className="shrink-0 mt-0.5" />
-                    <p>No credit card required for risk assessment. Final pricing confirmed after assessment.</p>
-                  </div>
-                </motion.div>
-
-                <div className="mt-6 bg-secondary/40 rounded-2xl p-5 border border-border/40">
-                  <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-3">All plans include</p>
-                  <ul className="space-y-2">
-                    {[
-                      "Coreser Score & weekly reporting",
-                      "CISA Framework gap analysis",
-                      "Onboarding & deployment support",
-                      "99.9% uptime SLA",
-                    ].map((item) => (
-                      <li key={item} className="flex items-center gap-2 text-xs text-foreground/70">
-                        <CheckCircle size={12} className="text-primary shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FAQ */}
-      <section className="py-24 bg-muted/30 border-t border-border/40">
+      <section className="py-24 bg-white border-t border-border/30">
         <div className="container px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
-          <h2 className="text-3xl font-display font-bold text-foreground text-center mb-12">Pricing FAQ</h2>
-          <div className="space-y-6">
+          <h2 className="text-3xl font-display font-bold text-foreground text-center mb-12">Common questions</h2>
+          <div className="space-y-5">
             {[
               {
                 q: "Is there a minimum contract length?",
-                a: "Monthly plans have no lock-in. Annual plans are billed upfront and carry a 20% discount.",
+                a: "Starter is free with no commitment. Foundations and Advanced plans are tailored — we'll work with you on the right term and structure for your organization.",
               },
               {
-                q: "What counts as an endpoint?",
-                a: "Any device running the Coreser Agent — laptops, workstations, servers, and VMs all count. Mobile devices and network devices are not counted.",
+                q: "Can I start with one module and add more?",
+                a: "Yes. Every module is independently deployable and can be activated or deactivated at any time from your dashboard. Changes are prorated.",
               },
               {
-                q: "Can I add modules after signing up?",
-                a: "Yes. You can activate or deactivate any add-on module at any time from your dashboard. Changes are prorated.",
+                q: "Is the Starter plan really free?",
+                a: "Yes. The Starter tier is free for up to 1,000 users and includes your baseline Coreser Score and SaaS discovery. No credit card required.",
               },
               {
-                q: "Is the free risk assessment really free?",
-                a: "Yes. The initial risk assessment and your first Coreser Score report are completely free, with no credit card required.",
+                q: "How does pricing work for larger organizations?",
+                a: "For Foundations and Advanced, pricing is tailored to your organization's size, industry, and the modules you need. Contact us for a custom quote.",
               },
             ].map(({ q, a }) => (
-              <div key={q} className="bg-white rounded-2xl p-6 border border-border/40">
-                <h4 className="font-semibold text-foreground mb-2">{q}</h4>
+              <div key={q} className="bg-secondary/20 rounded-2xl p-6 border border-border/30">
+                <h4 className="font-semibold text-foreground mb-2 text-sm">{q}</h4>
                 <p className="text-muted-foreground text-sm leading-relaxed">{a}</p>
               </div>
             ))}

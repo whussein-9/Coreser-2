@@ -61,14 +61,14 @@ export function Navbar() {
               {link.name}
             </Link>
           ))}
-          <Link href="/pricing">
+          <a href="/#contact">
             <Button
               className="rounded-full px-5 py-2 h-9 bg-primary hover:bg-accent text-white transition-all duration-300 text-sm"
               data-testid="button-cta-navbar"
             >
-              Free Risk Assessment
+              Start Free Trial
             </Button>
-          </Link>
+          </a>
         </div>
 
         <button
@@ -95,11 +95,11 @@ export function Navbar() {
               {link.name}
             </Link>
           ))}
-          <Link href="/pricing" onClick={() => setMobileMenuOpen(false)}>
+          <a href="/#contact" onClick={() => setMobileMenuOpen(false)}>
             <Button className="mt-4 rounded-full px-8 py-6 text-lg bg-primary hover:bg-accent text-white">
-              Free Risk Assessment
+              Start Free Trial
             </Button>
-          </Link>
+          </a>
         </div>
       </div>
     </nav>

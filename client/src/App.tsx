@@ -9,6 +9,7 @@ import FeaturesPage from "@/pages/FeaturesPage";
 import Pricing from "@/pages/Pricing";
 import Industries from "@/pages/Industries";
 import Resources from "@/pages/Resources";
+import BlogPost from "@/pages/BlogPost";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/pricing" component={Pricing} />
       <Route path="/industries" component={Industries} />
       <Route path="/resources" component={Resources} />
+      <Route path="/blog/:id" component={BlogPost} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
 };
 
@@ -24,7 +24,7 @@ const blogPosts = [
     id: 1,
     category: "Threat Intelligence",
     title: "The 2025 Mid-Market Threat Report: What Changed and What Didn't",
-    excerpt: "Ransomware remained the dominant threat, but the entry points evolved significantly. Here's what your team needs to know.",
+    excerpt: "Ransomware remained the dominant threat, but the entry points evolved significantly. Here's what your team needs to know going into 2026.",
     readTime: "8 min read",
     date: "Apr 2, 2026",
     featured: true,
@@ -33,7 +33,7 @@ const blogPosts = [
     id: 2,
     category: "Compliance",
     title: "SOC 2 Type II in 90 Days: A Practical Guide for SaaS Startups",
-    excerpt: "Most teams think SOC 2 takes 12+ months. With the right tooling, 90 days is achievable. Here's our proven playbook.",
+    excerpt: "Most teams think SOC 2 takes 12+ months. With the right tooling and a disciplined approach, 90 days is achievable.",
     readTime: "12 min read",
     date: "Mar 19, 2026",
     featured: true,
@@ -42,7 +42,7 @@ const blogPosts = [
     id: 3,
     category: "Best Practices",
     title: "Zero Trust Architecture for Organizations Without a CISO",
-    excerpt: "Zero trust isn't just an enterprise concept. Mid-market teams can implement it incrementally, starting with identity.",
+    excerpt: "Zero trust isn't just an enterprise concept. Growing teams can implement it incrementally, starting with identity.",
     readTime: "6 min read",
     date: "Mar 5, 2026",
     featured: false,
@@ -69,7 +69,7 @@ const blogPosts = [
     id: 6,
     category: "Threat Intelligence",
     title: "Supply Chain Attacks: How to Audit Your Vendor Security in 30 Minutes",
-    excerpt: "Your vendors are your biggest blind spot. Here's a practical checklist for rapid third-party security reviews.",
+    excerpt: "Your vendors are your biggest blind spot. A practical checklist for rapid third-party security reviews.",
     readTime: "7 min read",
     date: "Jan 28, 2026",
     featured: false,
@@ -87,6 +87,7 @@ const caseStudies = [
     quote:
       "Coreser's Compliance Manager made evidence collection completely automated. We just clicked 'generate report' and submitted to our auditor.",
     author: "CTO, Prairie Health Group",
+    blogId: 4,
   },
   {
     company: "Meridian Payments",
@@ -96,8 +97,9 @@ const caseStudies = [
     metric: "$2.4M",
     metricLabel: "in new ARR attributed to security posture",
     quote:
-      "Before Coreser, enterprise buyers were killing deals over our security questionnaire responses. Now it's a strength.",
+      "Before Coreser, enterprise buyers were killing deals over our security questionnaire responses. Now it's a competitive strength.",
     author: "CEO, Meridian Payments",
+    blogId: 2,
   },
   {
     company: "Vantage Manufacturing",
@@ -109,6 +111,7 @@ const caseStudies = [
     quote:
       "We were hit by ransomware twice in three years. Since deploying Coreser's endpoint protection and network monitoring, we haven't had a single incident.",
     author: "IT Director, Vantage Manufacturing",
+    blogId: 1,
   },
 ];
 
@@ -190,13 +193,13 @@ function SecurityQuiz() {
           </div>
         </div>
         <h3 className={`text-2xl font-display font-bold mb-2 ${grade.color}`}>{grade.label}</h3>
-        <p className="text-muted-foreground mb-8 max-w-sm mx-auto">{grade.desc}</p>
+        <p className="text-muted-foreground mb-8 max-w-sm mx-auto text-sm">{grade.desc}</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/pricing">
+          <a href="/#contact">
             <Button className="rounded-full px-8 py-5 bg-primary hover:bg-accent text-white" data-testid="button-quiz-cta">
               Get Full Risk Assessment <ArrowRight size={15} className="ml-2" />
             </Button>
-          </Link>
+          </a>
           <Button
             variant="outline"
             className="rounded-full px-8 py-5"
@@ -252,24 +255,21 @@ export default function Resources() {
       <Navbar />
 
       {/* Header */}
-      <section className="pt-32 pb-16 bg-gradient-to-b from-secondary/30 to-background">
+      <section className="pt-36 pb-16 bg-gradient-to-b from-secondary/30 to-background">
         <div className="container px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
           <motion.div initial="hidden" animate="show" variants={stagger}>
-            <motion.p variants={fadeUp} className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
-              Resources
-            </motion.p>
             <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl font-display font-bold text-foreground mb-6">
               Learn. Assess. Improve.
             </motion.h1>
             <motion.p variants={fadeUp} className="text-muted-foreground text-xl leading-relaxed max-w-2xl mx-auto">
-              Free tools, insights, and case studies to help your organization build a stronger security posture.
+              Free tools, insights, and case studies to help your organization build a stronger security posture — no strings attached.
             </motion.p>
           </motion.div>
         </div>
       </section>
 
       {/* Tab Navigation */}
-      <section className="sticky top-[60px] z-40 bg-white/90 backdrop-blur-md border-b border-border/40">
+      <section className="sticky top-[60px] z-40 bg-background/90 backdrop-blur-md border-b border-border/40">
         <div className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="flex gap-1 py-2 overflow-x-auto">
             {[
@@ -302,52 +302,68 @@ export default function Resources() {
           {/* Blog */}
           {activeTab === "blog" && (
             <motion.div id="blog" initial="hidden" animate="show" variants={stagger}>
-              {/* Featured */}
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 {blogPosts.filter(p => p.featured).map((post) => (
                   <motion.article
                     key={post.id}
                     variants={fadeUp}
-                    className="bg-white border border-border/50 rounded-3xl overflow-hidden hover:shadow-md transition-shadow group cursor-pointer"
+                    className="bg-white border border-border/50 rounded-3xl overflow-hidden hover:shadow-md transition-shadow group"
                     data-testid={`card-blog-${post.id}`}
                   >
-                    <div className="bg-gradient-to-br from-secondary/30 to-primary/10 h-40" />
+                    <div className="bg-gradient-to-br from-secondary/40 to-primary/8 h-40" />
                     <div className="p-7">
                       <span className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full">
                         {post.category}
                       </span>
-                      <h3 className="text-xl font-display font-bold text-foreground mt-4 mb-3 group-hover:text-primary transition-colors">
-                        {post.title}
-                      </h3>
+                      <Link href={`/blog/${post.id}`}>
+                        <h3 className="text-xl font-display font-bold text-foreground mt-4 mb-3 group-hover:text-primary transition-colors cursor-pointer">
+                          {post.title}
+                        </h3>
+                      </Link>
                       <p className="text-muted-foreground text-sm leading-relaxed mb-5">{post.excerpt}</p>
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1"><Clock size={12} />{post.readTime}</span>
-                        <span>{post.date}</span>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                          <span className="flex items-center gap-1"><Clock size={12} />{post.readTime}</span>
+                          <span>{post.date}</span>
+                        </div>
+                        <Link href={`/blog/${post.id}`}>
+                          <button className="flex items-center gap-1 text-xs text-primary font-medium hover:gap-2 transition-all">
+                            Read <ArrowRight size={12} />
+                          </button>
+                        </Link>
                       </div>
                     </div>
                   </motion.article>
                 ))}
               </div>
 
-              {/* Grid */}
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {blogPosts.filter(p => !p.featured).map((post) => (
                   <motion.article
                     key={post.id}
                     variants={fadeUp}
-                    className="bg-white border border-border/50 rounded-2xl p-6 hover:shadow-md transition-shadow group cursor-pointer"
+                    className="bg-white border border-border/50 rounded-2xl p-6 hover:shadow-md transition-shadow group"
                     data-testid={`card-blog-${post.id}`}
                   >
                     <span className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full">
                       {post.category}
                     </span>
-                    <h3 className="text-base font-display font-bold text-foreground mt-4 mb-3 group-hover:text-primary transition-colors">
-                      {post.title}
-                    </h3>
+                    <Link href={`/blog/${post.id}`}>
+                      <h3 className="text-base font-display font-bold text-foreground mt-4 mb-3 group-hover:text-primary transition-colors cursor-pointer">
+                        {post.title}
+                      </h3>
+                    </Link>
                     <p className="text-muted-foreground text-sm leading-relaxed mb-4">{post.excerpt}</p>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1"><Clock size={11} />{post.readTime}</span>
-                      <span>{post.date}</span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1"><Clock size={11} />{post.readTime}</span>
+                        <span>{post.date}</span>
+                      </div>
+                      <Link href={`/blog/${post.id}`}>
+                        <button className="flex items-center gap-1 text-xs text-primary font-medium">
+                          Read <ArrowRight size={11} />
+                        </button>
+                      </Link>
                     </div>
                   </motion.article>
                 ))}
@@ -362,7 +378,7 @@ export default function Resources() {
                 <h2 className="text-3xl font-display font-bold text-foreground mb-3">
                   5-Minute Security Quiz
                 </h2>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Answer 5 questions to get an instant snapshot of your organization's security posture. No email required.
                 </p>
               </motion.div>
@@ -380,7 +396,7 @@ export default function Resources() {
                   <motion.div
                     key={study.company}
                     variants={fadeUp}
-                    className="bg-white border border-border/50 rounded-3xl p-8 hover:shadow-md transition-shadow"
+                    className="bg-white border border-border/50 rounded-3xl p-8 hover:shadow-md transition-shadow flex flex-col"
                     data-testid={`card-casestudy-${study.company.toLowerCase().replace(/\s+/g, "-")}`}
                   >
                     <div className="flex items-center gap-3 mb-6">
@@ -397,19 +413,26 @@ export default function Resources() {
                       <div className="text-sm text-muted-foreground">{study.metricLabel}</div>
                     </div>
                     <p className="text-sm font-semibold text-foreground mb-3">{study.result}</p>
-                    <blockquote className="text-sm text-muted-foreground italic leading-relaxed border-l-2 border-primary/30 pl-4 mb-5">
+                    <blockquote className="text-sm text-muted-foreground italic leading-relaxed border-l-2 border-primary/25 pl-4 mb-5 flex-1">
                       "{study.quote}"
                     </blockquote>
-                    <p className="text-xs text-muted-foreground">— {study.author}</p>
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs text-muted-foreground">— {study.author}</p>
+                      <Link href={`/blog/${study.blogId}`}>
+                        <button className="flex items-center gap-1 text-xs text-primary font-medium hover:gap-2 transition-all">
+                          Full story <ArrowRight size={11} />
+                        </button>
+                      </Link>
+                    </div>
                   </motion.div>
                 ))}
               </div>
               <div className="text-center mt-12">
-                <Link href="/pricing">
+                <a href="/#contact">
                   <Button className="rounded-full px-8 py-5 bg-primary hover:bg-accent text-white" data-testid="button-cases-cta">
-                    Get Your Own Success Story <ArrowRight size={16} className="ml-2" />
+                    Start Your Free Trial <ArrowRight size={16} className="ml-2" />
                   </Button>
-                </Link>
+                </a>
               </div>
             </motion.div>
           )}
@@ -421,13 +444,13 @@ export default function Resources() {
                 <h2 className="text-3xl font-display font-bold text-foreground mb-3">
                   Employee Security Culture Survey
                 </h2>
-                <p className="text-muted-foreground">
-                  Send this survey to your team to measure security awareness and identify your highest-risk employees.
+                <p className="text-muted-foreground text-sm">
+                  Use this survey to measure security awareness across your team and identify your highest-risk employees.
                 </p>
               </motion.div>
 
               <motion.div variants={fadeUp} className="bg-white rounded-3xl p-10 border border-border/50 shadow-sm">
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {[
                     { q: "Do you use the same password for multiple work accounts?", risk: "High Risk", icon: XCircle, color: "text-destructive" },
                     { q: "Have you completed security training in the last 12 months?", risk: "Good", icon: CheckCircle, color: "text-green-600" },
@@ -435,10 +458,10 @@ export default function Resources() {
                     { q: "Have you ever clicked a link in an unexpected email at work?", risk: "Medium Risk", icon: XCircle, color: "text-yellow-600" },
                     { q: "Is your laptop disk encrypted?", risk: "Good", icon: CheckCircle, color: "text-green-600" },
                   ].map(({ q, risk, icon: Icon, color }) => (
-                    <div key={q} className="flex items-start justify-between gap-4 p-4 rounded-2xl bg-muted/30 border border-border/30">
-                      <p className="text-sm text-foreground">{q}</p>
-                      <div className={`flex items-center gap-1 shrink-0 text-xs font-semibold ${color}`}>
-                        <Icon size={14} />
+                    <div key={q} className="flex items-start justify-between gap-4 p-4 rounded-2xl bg-muted/25 border border-border/30">
+                      <p className="text-sm text-foreground leading-relaxed">{q}</p>
+                      <div className={`flex items-center gap-1.5 shrink-0 text-xs font-semibold ${color}`}>
+                        <Icon size={13} />
                         {risk}
                       </div>
                     </div>
@@ -447,8 +470,8 @@ export default function Resources() {
 
                 <div className="mt-8 p-6 bg-secondary/30 rounded-2xl">
                   <div className="flex items-center gap-3 mb-4">
-                    <FileText size={20} className="text-primary" />
-                    <h4 className="font-semibold text-foreground">Get the Full 25-Question Survey</h4>
+                    <FileText size={19} className="text-primary" />
+                    <h4 className="font-semibold text-foreground text-sm">Get the Full 25-Question Survey</h4>
                   </div>
                   <p className="text-sm text-muted-foreground mb-5">
                     Send the complete survey to your entire team and receive a department-by-department risk report.
@@ -457,7 +480,7 @@ export default function Resources() {
                     <input
                       type="email"
                       placeholder="your@company.com"
-                      className="flex-1 rounded-xl border border-border/60 px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+                      className="flex-1 rounded-xl border border-border/60 bg-white px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
                       data-testid="input-survey-email"
                     />
                     <Button className="rounded-xl px-5 bg-primary hover:bg-accent text-white text-sm" data-testid="button-survey-submit">
