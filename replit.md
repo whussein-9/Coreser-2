@@ -6,7 +6,7 @@ A multi-page marketing website for **Coreser**, an enterprise-grade cybersecurit
 
 **Brand**: White and sage green color palette (#8A9A5B ≈ hsl(95, 26%, 48%))  
 **Fonts**: DM Sans (body) + Outfit (display headings)  
-**Stack**: React + TypeScript + Express + PostgreSQL + Drizzle ORM
+**Stack**: React + TypeScript + Vite (static build — GitHub Pages compatible)
 
 ---
 
@@ -33,15 +33,14 @@ A multi-page marketing website for **Coreser**, an enterprise-grade cybersecurit
 - **Data fetching**: `@tanstack/react-query`
 - **Forms**: `react-hook-form` + `zod` validation
 
-### Backend (`server/`)
-- **Framework**: Express.js
-- **Database**: PostgreSQL via Drizzle ORM
-- **Storage**: `DatabaseStorage` class implements `IStorage`
-- **Routes**: `POST /api/contact` — stores contact form submissions
+### Static Deployment
+- **Build output**: `dist/public/` (served as static files)
+- **Contact form**: Uses Formspree. Set `VITE_FORMSPREE_ENDPOINT` env var (or GitHub Actions secret) to your Formspree form URL. Without it, form shows a simulated success in dev.
+- **GitHub Actions**: `.github/workflows/deploy.yml` — builds and deploys to GitHub Pages on push to `main`
+- **SPA routing**: `client/public/404.html` + `client/index.html` script handle deep-link routing on GitHub Pages
 
 ### Shared (`shared/`)
-- `schema.ts` — Drizzle schema + Zod insert schemas
-  - `contact_messages` table: `id`, `name`, `email`, `message`, `createdAt`
+- `schema.ts` — Zod insert schemas for contact form validation
 
 ---
 
@@ -51,7 +50,7 @@ A multi-page marketing website for **Coreser**, an enterprise-grade cybersecurit
 - **Security Quiz**: 5-question interactive quiz with instant score display
 - **CISA Framework Alignment**: All content maps to Identify/Protect/Detect/Respond/Recover
 - **Coreser Score System**: 0-100 composite security posture rating
-- **Contact Form**: Posts to `/api/contact`, stored in PostgreSQL
+- **Contact Form**: Submits via Formspree (static-compatible); set `VITE_FORMSPREE_ENDPOINT` to enable
 
 ---
 

@@ -1,27 +1,34 @@
 import { useMutation } from "@tanstack/react-query";
-import { api } from "@shared/routes";
 import { z } from "zod";
+import { insertContactMessageSchema } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 
-type ContactInput = z.infer<typeof api.contact.submit.input>;
+type ContactInput = z.infer<typeof insertContactMessageSchema>;
+
+const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT || "";
 
 export function useSubmitContact() {
   const { toast } = useToast();
 
   return useMutation({
     mutationFn: async (data: ContactInput) => {
-      const res = await fetch(api.contact.submit.path, {
-        method: api.contact.submit.method,
-        headers: { "Content-Type": "application/json" },
+      if (!FORMSPREE_ENDPOINT) {
+        await new Promise((r) => setTimeout(r, 800));
+        return { ok: true };
+      }
+
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(data),
       });
 
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Failed to send message");
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to send message");
       }
 
-      return api.contact.submit.responses[201].parse(await res.json());
+      return res.json();
     },
     onSuccess: () => {
       toast({
