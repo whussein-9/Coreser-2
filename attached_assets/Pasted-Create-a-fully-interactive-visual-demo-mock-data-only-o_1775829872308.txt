@@ -1,0 +1,116 @@
+Create a fully interactive visual demo (mock data only) of a cybersecurity platform that simulates what users would see after connecting their systems.
+
+🧱 Core Layout
+Left sidebar navigation (collapsible)
+Top header with search + profile
+Main dashboard content area
+Light modern theme (white/gray/blue accents)
+Card-based UI with metrics
+📊 Main Dashboard (Home Page)
+
+Include these sections with mock data:
+
+1. Overview Cards
+Identity Providers
+“1 IDP tenant in use (6 capable)”
+Unfederated Apps
+“60 apps discovered”
+Integrated 3rd Party Apps
+“5.7k apps connected”
+2. Status Highlights
+Federated apps count (e.g., 85)
+Apps bypassing IDP (0)
+Inactive apps (1k)
+Critical/high-risk apps (514)
+⚙️ Operationalization Section
+Cards:
+Onboarded Services (20 services)
+Standards (17 standards)
+Policies Applied (21)
+Alerts (35 last 30 days)
+Sub-metrics:
+“57 to onboard”
+“42% posture score”
+“0% SOX / COBIT score”
+“4 integration policies”
+“8 threat policies”
+“35 high alerts”
+🧭 Sidebar Navigation (Make all pages clickable)
+
+Create these pages (mock but functional navigation):
+
+Home (Dashboard)
+Connections
+Global Search
+Threats
+Posture
+Integrations
+Extend
+Dashboards
+Services
+Activity
+Objects
+Browser Extension
+Action Policies
+Reporting
+Downloads
+Audit Log
+📄 Individual Pages (Mock Functionality)
+
+Each page should:
+
+Have a title + description
+Show tables, charts, or cards
+Use realistic cybersecurity mock data
+
+Examples:
+
+Threats Page
+Table of threats (severity, source, status)
+Filters (critical, high, medium)
+Status badges
+Posture Page
+Security score visualization (progress bar or gauge)
+Compliance frameworks (SOX, NIST, ISO)
+Integrations Page
+List of connected apps (Google, Slack, GitHub, etc.)
+Status: Connected / At Risk
+Activity Page
+Timeline of events (logins, alerts, changes)
+📈 Visual Components
+
+Include:
+
+Charts (bar, line, pie) using mock data
+Status badges (green, yellow, red)
+Icons for apps/services
+Tables with sorting/filtering (basic JS)
+⚡ Interactivity
+Sidebar navigation updates page content
+Dropdown filters (non-functional logic is fine, just UI)
+Hover states + transitions
+Expandable cards or panels
+🎨 Design Style
+Clean enterprise SaaS look
+Inspired by:
+Cybersecurity dashboards
+Admin panels
+Use:
+Soft shadows
+Rounded cards
+Subtle animations
+🚫 Important Constraints
+No real backend required
+Use static/mock JSON data
+Focus on realistic visuals + UX
+Everything should feel “live” but simulated
+➕ Bonus Features (if possible)
+Fake “alerts updating” animation
+Notification bell with count
+Dark mode toggle
+Search bar (UI only)
+💡 Output Requirements
+Fully working frontend app
+Clean component structure
+Easy to embed into an existing website
+Mobile responsive
