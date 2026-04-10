@@ -10,6 +10,9 @@ import Pricing from "@/pages/Pricing";
 import Industries from "@/pages/Industries";
 import Resources from "@/pages/Resources";
 import BlogPost from "@/pages/BlogPost";
+import TrialPage from "@/pages/TrialPage";
+import ContactPage from "@/pages/ContactPage";
+import DemoPage from "@/pages/DemoPage";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -22,6 +25,9 @@ function Router() {
       <Route path="/industries" component={Industries} />
       <Route path="/resources" component={Resources} />
       <Route path="/blog/:id" component={BlogPost} />
+      <Route path="/trial" component={TrialPage} />
+      <Route path="/contact" component={ContactPage} />
+      <Route path="/demo" component={DemoPage} />
       <Route component={NotFound} />
     </Switch>
   );

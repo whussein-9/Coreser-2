@@ -24,7 +24,7 @@ const tiers = [
     tagline: "Start free. See what you're working with.",
     description: "For growing teams ready to understand and reduce data loss risks with complete SaaS visibility.",
     cta: "Get Started",
-    ctaHref: "/#contact",
+    ctaHref: "/trial",
     highlight: false,
     features: [
       "Discover SaaS sprawl, including unsanctioned AI and shadow apps",
@@ -39,7 +39,7 @@ const tiers = [
     tagline: "Governance and discovery at scale.",
     description: "For organizations ready to enforce privilege, map compliance, and tighten third-party access.",
     cta: "Get a Quote",
-    ctaHref: "/#contact",
+    ctaHref: "/contact",
     highlight: true,
     features: [
       "Shadow SaaS, AI agents, integrations, and browser extensions",
@@ -55,7 +55,7 @@ const tiers = [
     tagline: "Full detection, response, and AI security.",
     description: "For security-mature organizations that need deep threat detection, incident response, and AI guardrails.",
     cta: "Get a Quote",
-    ctaHref: "/#contact",
+    ctaHref: "/contact",
     highlight: false,
     features: [
       "Account takeover and session hijack detection",
@@ -248,11 +248,11 @@ export default function Pricing() {
               Tell us about your environment and we'll put together a configuration built for your risk profile, your team size, and your budget.
             </motion.p>
             <motion.div variants={fadeUp}>
-              <a href="/#contact">
+              <Link href="/contact">
                 <Button className="rounded-full px-10 py-6 text-base bg-primary hover:bg-accent text-white shadow-md shadow-primary/15">
                   Get a Quote <ArrowRight size={16} className="ml-2" />
                 </Button>
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
         </div>

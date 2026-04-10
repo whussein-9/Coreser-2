@@ -195,11 +195,11 @@ function SecurityQuiz() {
         <h3 className={`text-2xl font-display font-bold mb-2 ${grade.color}`}>{grade.label}</h3>
         <p className="text-muted-foreground mb-8 max-w-sm mx-auto text-sm">{grade.desc}</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <a href="/#contact">
+          <Link href="/trial">
             <Button className="rounded-full px-8 py-5 bg-primary hover:bg-accent text-white" data-testid="button-quiz-cta">
-              Get Full Risk Assessment <ArrowRight size={15} className="ml-2" />
+              Start Free Trial <ArrowRight size={15} className="ml-2" />
             </Button>
-          </a>
+          </Link>
           <Button
             variant="outline"
             className="rounded-full px-8 py-5"
@@ -428,11 +428,11 @@ export default function Resources() {
                 ))}
               </div>
               <div className="text-center mt-12">
-                <a href="/#contact">
+                <Link href="/trial">
                   <Button className="rounded-full px-8 py-5 bg-primary hover:bg-accent text-white" data-testid="button-cases-cta">
                     Start Your Free Trial <ArrowRight size={16} className="ml-2" />
                   </Button>
-                </a>
+                </Link>
               </div>
             </motion.div>
           )}

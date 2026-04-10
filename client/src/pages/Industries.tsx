@@ -206,9 +206,9 @@ export default function Industries() {
                         </span>
                       ))}
                     </div>
-                    <Link href="/pricing">
+                    <Link href="/contact">
                       <Button className="rounded-full px-7 py-5 bg-primary hover:bg-accent text-white" data-testid={`button-industry-${industry.id}`}>
-                        See {industry.name} Pricing <ArrowRight size={15} className="ml-2" />
+                        Get a Quote <ArrowRight size={15} className="ml-2" />
                       </Button>
                     </Link>
                   </div>
@@ -257,9 +257,9 @@ export default function Industries() {
               Coreser works for any mid-market organization. Talk to a security specialist and we'll configure the right modules for your specific environment.
             </motion.p>
             <motion.div variants={fadeUp}>
-              <Link href="/pricing">
+              <Link href="/contact">
                 <Button className="rounded-full px-10 py-6 text-lg bg-primary hover:bg-accent text-white" data-testid="button-industries-cta">
-                  Get Custom Assessment <ArrowRight size={18} className="ml-2" />
+                  Get a Quote <ArrowRight size={18} className="ml-2" />
                 </Button>
               </Link>
             </motion.div>

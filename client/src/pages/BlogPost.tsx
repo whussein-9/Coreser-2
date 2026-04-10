@@ -284,7 +284,7 @@ export default function BlogPost() {
 
             <div className="mt-16 pt-10 border-t border-border/50">
               <p className="text-muted-foreground mb-5 text-sm">Ready to see Coreser in your environment?</p>
-              <Link href="/#contact">
+              <Link href="/trial">
                 <Button className="rounded-full px-8 py-5 bg-primary hover:bg-accent text-white">
                   Start Free Trial
                 </Button>

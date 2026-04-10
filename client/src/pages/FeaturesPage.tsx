@@ -327,9 +327,9 @@ export default function FeaturesPage() {
               Schedule a 30-minute demo and see how Coreser fits your specific environment.
             </motion.p>
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/pricing">
+              <Link href="/demo">
                 <Button className="rounded-full px-10 py-6 text-lg bg-white text-primary hover:bg-secondary transition-all duration-300" data-testid="button-features-cta">
-                  Start Free Assessment <ArrowRight size={18} className="ml-2" />
+                  Get a Demo <ArrowRight size={18} className="ml-2" />
                 </Button>
               </Link>
             </motion.div>

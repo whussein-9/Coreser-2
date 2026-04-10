@@ -23,7 +23,7 @@ const footerLinks = {
   ],
   Company: [
     { name: "About Coreser", href: "/" },
-    { name: "Contact", href: "/#contact" },
+    { name: "Contact", href: "/contact" },
     { name: "Privacy Policy", href: "/" },
     { name: "Terms of Service", href: "/" },
   ],

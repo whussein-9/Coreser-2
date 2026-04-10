@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ContactSection } from "@/components/ContactSection";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -45,12 +44,12 @@ export default function Home() {
               Coreser gives growing businesses the cybersecurity depth of enterprise teams — without the complexity, overhead, or price tag.
             </motion.p>
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4">
-              <a href="#contact">
+              <Link href="/trial">
                 <Button className="rounded-full px-8 py-6 text-base bg-primary hover:bg-accent text-white transition-all duration-300 shadow-md shadow-primary/15" data-testid="button-hero-cta">
                   Start Free Trial
                   <ArrowRight size={16} className="ml-2" />
                 </Button>
-              </a>
+              </Link>
               <Link href="/how-it-works">
                 <Button variant="outline" className="rounded-full px-8 py-6 text-base border-border hover:bg-secondary hover:border-primary/30 transition-all duration-300" data-testid="button-hero-secondary">
                   See How It Works
@@ -390,18 +389,17 @@ export default function Home() {
               Get a free, no-obligation security assessment and Coreser Score — actionable insights your team can use the same day.
             </motion.p>
             <motion.div variants={fadeUp}>
-              <a href="#contact">
+              <Link href="/trial">
                 <Button className="rounded-full px-10 py-6 text-base bg-primary hover:bg-accent text-white shadow-md shadow-primary/20" data-testid="button-final-cta">
                   Start Free Trial
                   <ArrowRight size={17} className="ml-2" />
                 </Button>
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      <ContactSection />
       <Footer />
     </div>
   );

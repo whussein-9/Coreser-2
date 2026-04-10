@@ -249,9 +249,9 @@ export default function HowItWorks() {
               Run a free risk assessment and receive your Coreser Score within 24 hours.
             </motion.p>
             <motion.div variants={fadeUp}>
-              <Link href="/pricing">
+              <Link href="/trial">
                 <Button className="rounded-full px-10 py-6 text-lg bg-primary hover:bg-accent text-white shadow-lg shadow-primary/20" data-testid="button-hiw-cta">
-                  Get Free Risk Assessment <ArrowRight size={18} className="ml-2" />
+                  Start Free Trial <ArrowRight size={18} className="ml-2" />
                 </Button>
               </Link>
             </motion.div>
