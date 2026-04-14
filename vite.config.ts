@@ -23,6 +23,7 @@ if (isReplit && isDev) {
 }
 
 export default defineConfig({
+  base: "/Coreser-2/",
   plugins: [react(), ...replitPlugins],
   resolve: {
     alias: {
